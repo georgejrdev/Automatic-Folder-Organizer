@@ -1,41 +1,29 @@
-#FEITO PARA PORTFÓLIO E ESTUDO S2
-#ULTIMA ATUALIZAÇÃO: 29/09/2023
-
 import os
 from tkinter.filedialog import askdirectory
 
-caminho = askdirectory(title="Selecione Uma Pasta")
+path = askdirectory(title="Select a folder")
 
-lista_arquivos = os.listdir(caminho)
+all_files = os.listdir(path)
 
-#SEPARANDO OS TIPOS DE ARQUIVOS
 
-locais = {
-    "imagens": [".png", ".jpg", ".gif", ".bmp", ".webp", ".tiff", ".raw"],
-    "textos": [".txt", ".pdf", ".doc", ".docx"],
-    "musicas": [".mp3", ".wav", ".aac"],
-    "videos": [".mp4", ".mov", ".wmv", ".avi", ".avchd", ".mkv"],
-    "planilhas":[ ".xls", ".xlsx", ".csv"],
-    "scripts":[".js",".py",".html", ".css", ".php",".java"],
-    "executaveis":[".exe"],
-    "compactados":[".rar",".zip"]
+type_files = {
+    "images": [".png", ".jpg", ".gif", ".bmp", ".webp", ".tiff", ".raw", ".svg"],
+    "texts": [".txt", ".pdf", ".doc", ".docx", ".odt", ".md", ".rtf", ".tex", ".wpd"],
+    "musics": [".mp3", ".wav", ".aac", ".flac", ".m4a", ".wma", ".ogg"],
+    "videos": [".mp4", ".mov", ".wmv", ".avi", ".avchd", ".mkv", ".webm"],
+    "sheets":[ ".xls", ".xlsx", ".csv", ".ods"],
+    "scripts":[".js",".py",".html", ".css", ".php",".java",".c", ".cpp", ".cs"],
+    "executables":[".exe", ".msi"],
+    "compacts":[".rar",".zip",".7z", ".tar", ".gz", ".bz2", ".xz"],
 }
 
-for arquivo in lista_arquivos:
 
-# EXTRAINDO O NOME E A EXTENSÃO DO ARQUIVO
+for file in all_files:
+    name, extension = os.path.splitext(f"{path}/{file}")
+    
+    for folder in type_files:
+        if extension in type_files[folder]:
+            if not os.path.exists(f"{path}/{folder}"):
+                os.mkdir(f"{path}/{folder}")
 
-    nome, extensao = os.path.splitext(f"{caminho}/{arquivo}")
-    for pasta in locais:
-        if extensao in locais[pasta]:
-
-# SE NÃO TIVER A PASTA, CRIA A PASTA
-
-            if not os.path.exists(f"{caminho}/{pasta}"):
-                os.mkdir(f"{caminho}/{pasta}")
-
-# MOVE OS ARQUIVOS PARA A PASTA CRIADA  
-
-#                     CAMINHO ANTIGO                 CAMINHO NOVO
-#                           |                              |
-            os.rename(f"{caminho}/{arquivo}", f"{caminho}/{pasta}/{arquivo}")
+            os.rename(f"{path}/{file}", f"{path}/{folder}/{file}")
